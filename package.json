@@ -1,0 +1,11 @@
+{
+  "name": "dbmsproject",
+  "version": "1.0.0",
+  "description": "DMBS Final Project",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "Bmach",
+  "license": "ISC"
+}
