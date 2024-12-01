@@ -5,9 +5,29 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #232222;
+  color:azure ;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.tableBox {
+  background: #181c29; 
+  border-radius: 15;
+}
+
+.tableBox h2 {
+  text-align: center;
+}
+
+.tableBox form {
+  height: 100;
+}
+
+.tableBox input {
+  padding-bottom: 15;
+}
+
