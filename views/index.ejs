@@ -1,0 +1,34 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.js"></script>
+    <link rel="stylesheet" href="/static/index.css">
+    <script type="text/javascript" src="/static/Table.js" ></script>
+    <%- include('Components/navbar.ejs') %>
+  </head>
+    <div class="tableBox">
+      <h2>Games</h2>
+      <form id="form" method="POST">
+        <h4>Filters:</h4>
+        <label for="date">Date: </label>
+        <input type="text" name="date" id="date">
+        <label for="team">Team: </label>
+        <input type="text" name="team" id="team">
+        <input type="submit" value="Submit">
+      </form>
+      <div id="myGrid" class="ag-theme-quartz" style="height: 500px; color:black"></div>
+    </div>
+    <div class="tableBox">
+    <h2>Airports</h2>
+      <form id="form2">
+        <h4>Filters:</h4>
+        <label for="dist">Max distance from stadium: </label>
+        <input type="text" name="dist" id="dist">
+        <input type="submit" value="Submit">
+      </form>
+    </div>
+    <div style="width: 50%; height: 480px; background: white; color: black; padding-left: 50%; flex:1" id="mapContainer">
+      <h1>MAP</h1>
+    </div>
+</html>
