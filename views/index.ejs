@@ -4,11 +4,12 @@
   <head>
     <script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.js"></script>
     <link rel="stylesheet" href="/static/index.css">
-    <script type="text/javascript" src="/static/Table.js" ></script>
+    <script type="text/javascript" src="/static/Table.js" ></script>   
+    <script type="module" src="/javascript/database.mjs"></script>
     <%- include('Components/navbar.ejs') %>
   </head>
     <div class="tableBox">
-      <h2>Games</h2>
+      <h2>      Games     </h2>
       <form id="form" method="POST">
         <h4>Filters:</h4>
         <label for="date">Date: </label>
