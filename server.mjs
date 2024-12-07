@@ -3,7 +3,9 @@ import ejs from 'ejs';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 //require('dotenv').config(); // For loading environment variables
-import {getCity, getCities, getDate, getTeam, createCity, removeCity} from "./database.mjs"
+import {getCity, getCities, getDate, getTeam, createCity, removeCity, updateCityName} from "./database.mjs"
+import path from 'path';
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
 // Initialize Express app
 const app = express();
@@ -11,14 +13,27 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 app.use("/static", express.static('./static/'));
+app.use(express.static(path.join(__dirname, 'public/')));
+console.log('Serving static files from:', path.join(__dirname, 'public'));
+
+app.set('view engine', 'ejs')
 
 app.get("/", async (req, res) => {
     res.render('index.ejs')
 })
 
+app.get("/test", (req, res) => {
+    res.render('test')
+})
 
-app.get("/city", async (req, res) => {
-    const notes = await getCity("Texas");
+//app.get("/api/data", (req, res) => {
+//    const data = {message: "This is the message"};
+//    res.json(data)
+//})
+
+app.get("/city/:state", async (req, res) => {
+    const state = req.params.state
+    const notes = await getCity(state);
     console.log(notes)
     res.send(notes);
 })
@@ -43,17 +58,25 @@ app.get("/Date", async (req, res) => {
     res.send(notes);
 })
 
-app.get("/addCity", async (req, res) => {
-    const notes = await createCity("Nacogdoches", "Tennessee", "0.00", "0.00");
-    console.log(notes)
-    res.send(notes);
-})
-
 app.get("/removeCity", async (req, res) => {
     const notes = await removeCity("Nacogdoches");
     console.log(notes)
     res.send(notes)
 })
+
+app.post('/createCity', async (req, res) => {
+    const { city, state } = req.body;
+    // Insert data into the database
+    const placeholder = await createCity(city, state, "0.00", "0.00");
+    res.send('Data successfully saved to the database!');
+});
+
+app.post('/updateCityName', async (req, res) => {
+    const { cityName, newName } = req.body;
+    console.log(cityName, newName)
+    const placeholder = await updateCityName(cityName, newName)
+    res.send('Data updated in the database!');
+});
 
 // Define the PORT
 const port = 4000;

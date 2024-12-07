@@ -13,6 +13,7 @@
     "body-parser": "^1.20.3",
     "bootstrap": "^5.1.0",
     "cors": "^2.8.5",
+    "debug": "^4.3.7",
     "dotenv": "^16.4.5",
     "express": "^5.0.1",
     "formik": "^2.4.6",
@@ -25,7 +26,10 @@
     "react-scripts": "^5.0.1",
     "web-vitals": "^2.1.4",
     "yup": "^1.4.0"
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6fb68a111a58fe8c44e1abd5111f2676b6cce27f
   },
   "scripts": {
     "start": "node server.mjs"
