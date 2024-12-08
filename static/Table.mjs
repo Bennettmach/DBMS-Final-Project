@@ -1,5 +1,4 @@
 // Row Data Interface
-import db from 'database.js'
 // Grid API: Access to Grid API methods
 let gridApi;
 
@@ -27,6 +26,8 @@ const gridOptions = {
 };
 // Create Grid: Create new grid within the #myGrid div, using the Grid Options object
 gridApi = agGrid.createGrid(document.querySelector("#myGrid"), gridOptions);
+
+
 module.exports = {
   getCity() {
     return db.getCities()

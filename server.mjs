@@ -3,7 +3,9 @@ import ejs from 'ejs';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 //require('dotenv').config(); // For loading environment variables
-import {getCity, getCities, getDate, getTeam, createCity, removeCity} from "./database.mjs"
+import {getCity, getCities, getDate, 
+        getTeam, createCity, removeCity
+        } from "./database.mjs"
 
 // Initialize Express app
 const app = express();
@@ -12,8 +14,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 app.use("/static", express.static('./static/'));
 
-app.get("/", async (req, res) => {
+app.get("/", (req, res) => {
     res.render('index.ejs')
+})
+
+app.post("/", async (req,res) => {
+    const cities = await getCities()
+    console.log(req.body + cities)
 })
 
 

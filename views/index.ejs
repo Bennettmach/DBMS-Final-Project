@@ -4,8 +4,22 @@
   <head>
     <script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.js"></script>
     <link rel="stylesheet" href="/static/index.css">
-    <script type="text/javascript" src="/static/Table.js" ></script>
+    <script type="text/javascript" src="/static/Table.mjs" ></script>
     <%- include('Components/navbar.ejs') %>
+
+    <!-- Map API-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+    
+    <title>Map at a specified location</title>
+    <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
+    <link rel="stylesheet" type="text/css" href="../template.css" />
+    <script type="text/javascript" src='../test-credentials.js'></script>    
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-service.js"></script>
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"></script>
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"></script>
+    <script>window.ENV_VARIABLE = 'developer.here.com'</script><script src='/Static/Map.js'></script>
   </head>
     <div class="tableBox">
       <h2>Games</h2>
@@ -17,6 +31,7 @@
         <input type="text" name="team" id="team">
         <input type="submit" value="Submit">
       </form>
+      <!--table placeholder element-->
       <div id="myGrid" class="ag-theme-quartz" style="height: 500px; color:black"></div>
     </div>
     <div class="tableBox">
@@ -28,7 +43,23 @@
         <input type="submit" value="Submit">
       </form>
     </div>
-    <div style="width: 50%; height: 480px; background: white; color: black; padding-left: 50%; flex:1" id="mapContainer">
-      <h1>MAP</h1>
-    </div>
+    <!--
+    <body id="markers-on-the-map">
+      <div class="page-header">
+          <h1>Map at a specified location</h1>
+          <p>Display a map at a specified location and zoom level</p>
+      </div>
+      <p>This example displays a movable map initially centered on the <b>Brandenburg Gate</b> in the centre of Berlin <i>(52.5159°N, 13.3777°E)</i></p>
+    -->   
+      <div id="map"></div>
+      <!-- 
+      <h3>Code</h3>
+      <p>
+          The <code>map.setCenter()</code> method and <code>map.setZoom() </code>method are able to control the location of the map.<br>
+      </p>
+      <script type="text/javascript" src='demo.js'></script>
+    </body>
+  -->
+    <div class="google-map">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3169.429551548009!2d-121.9719523232481!3d37.403320733468895!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808fc9c827c5f0df%3A0x11455a372e1f7d18!2sLevi&#39;s%20Stadium!5e0!3m2!1sen!2sus!4v1733330480972!5m2!1sen!2sus" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe> </div>
 </html>
