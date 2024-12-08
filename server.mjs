@@ -1,5 +1,4 @@
 import express from 'express';
-import ejs from 'ejs';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 //require('dotenv').config(); // For loading environment variables
@@ -22,8 +21,10 @@ app.get("/", async (req, res) => {
     res.render('index.ejs')
 })
 
-app.get("/test", (req, res) => {
-    res.render('test')
+app.get("/test", async (req, res) => {
+    const result = await getCities();
+    console.log(result);
+    res.render('test', { data: result });
 })
 
 //app.get("/api/data", (req, res) => {
@@ -32,10 +33,10 @@ app.get("/test", (req, res) => {
 //})
 
 app.get("/city/:state", async (req, res) => {
-    const state = req.params.state
-    const notes = await getCity(state);
-    console.log(notes)
-    res.send(notes);
+    const state = req.params.state;
+    const result = await getCity(state);
+    console.log(result);
+    res.render('test', { data: result });
 })
 
 app.get("/cities", async (req, res) => {

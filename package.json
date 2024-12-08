@@ -15,21 +15,19 @@
     "cors": "^2.8.5",
     "debug": "^4.3.7",
     "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
     "express": "^5.0.1",
     "formik": "^2.4.6",
+    "mime-db": "^1.53.0",
     "mysql2": "^3.11.5",
     "nodemon": "^3.1.7",
     "react": "^18.3.1",
     "react-bootstrap": "^2.9.0-beta.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^7.0.1",
-    "react-scripts": "^5.0.1",
+    "react-scripts": "^3.0.1",
     "web-vitals": "^2.1.4",
     "yup": "^1.4.0"
-<<<<<<< HEAD
-
-=======
->>>>>>> 6fb68a111a58fe8c44e1abd5111f2676b6cce27f
   },
   "scripts": {
     "start": "node server.mjs"
