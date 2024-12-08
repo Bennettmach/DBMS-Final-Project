@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <!-- Linking to a basic CSS file for styling -->
+    <link rel="stylesheet" href="styles.css">
+    <!-- Linking to a CDN for Font Awesome icons (for dashboard widgets) -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <!-- Some basic inline styles for simplicity -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7fc;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+        }
+        .container {
+            display: flex;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            transition: 0.3s;
+        }
+        .sidebar a {
+            display: block;
+            color: white;
+            padding: 10px;
+            text-decoration: none;
+            margin: 10px 0;
+        }
+        .sidebar a:hover {
+            background-color: #16a085;
+        }
+        .main-content {
+            margin-left: 270px;
+            padding: 20px;
+            flex: 1;
+        }
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .card h3 {
+            margin-top: 0;
+        }
+        .card .icon {
+            font-size: 2em;
+            color: #16a085;
+        }
+        .row {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .col {
+            flex: 1;
+            min-width: 250px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <h1>Admin Dashboard</h1>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+
+        <!-- Sidebar Section -->
+        <div class="sidebar">
+            <h2>Menu</h2>
+            <a href="#" id = "insertCities"><i class="fas fa-cogs"></i> Create Or Delete Cities</a>
+            <a href="#"><i class="fas fa-cogs"></i> Create Or Update Games</a>
+            <a href="#" id = "insertTeams"><i class="fas fa-cogs"></i> Create Or Delete Teams</a>
+            <a href="#"><i class="fas fa-cogs"></i> Create Or Update Stadiums</a>
+            <a href="#"><i class="fas fa-cogs"></i> Create Or Update Tickets</a>
+            <a href="#" id = "insertAdmin"><i class="fas fa-cogs"></i> Create New Admin</a>
+
+        </div>
+
+        <!-- Main Content Section -->
+        <div class="main-content">
+            <h2>Welcome, Admin</h2>
+            <p>INSERT INSTRUCTIONS ON INSERTING DATA HERE</p>
+
+            <!-- Dashboard Cards -->
+            <div class="row">
+                <!-- Card 1 -->
+                <div id="WhereInsertAdminCardGoes"></div>
+                <div id="WhereInsertCitiesCardGoes"></div>
+                <div id="WhereInsertTeamsCardGoes"></div>
+                <div class="col">
+                        
+                </div>
+            </div>
+
+            <!-- Activity Section -->
+            <div class="card">
+                <h3>Recent Activity</h3>
+                <ul>
+                    <li>City "Nacogdoches" Was Created</li>
+                    <li>Admin "Talmidge" was Created</li>
+                    <li>Game "2016 Playoffs" was created</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('insertAdmin').addEventListener('click', function(event) {
+            event.preventDefault();
+            const insertAdminCard = '<div class="card">\
+                            <i class="icon fas fa-users"></i>\
+                            <h3>Create New Admin Account</h3>\
+                            <form action="/createAdmin" method="POST">\
+                                <label for="Username">Username:</label>\
+                                <input type="text" id="Username" name="Username" required><br><br>\
+                                <label for="Password">Password:</label>\
+                                <input type="text" id="Password" name="Password" required><br><br>\
+                                <button type="submit">Create New Admin User</button>\
+                            </form>\
+                        </div>';
+            document.getElementById('WhereInsertAdminCardGoes').innerHTML = insertAdminCard;
+        });
+        document.getElementById('insertCities').addEventListener('click', function(event) {
+            event.preventDefault();
+            const insertCitiesCard = '<div class="card"><i class="icon fas fa-city"></i>\
+                        <h3>Create New City</h3>\
+                        <form action="/createCity" method="POST">\
+                            <label for="city">City Name:</label>\
+                            <input type="text" id="city" name="city" required><br><br>\
+                            <label for="state">State:</label>\
+                            <input type="text" id="state" name="state" required><br><br>\
+                            <label for="latitude">Latitude:</label>\
+                            <input type="latitude" id="latitude" name="latitude" required><br><br>\
+                            <label for="longitude">Longitude:</label>\
+                            <input type="longitude" id="longitude" name="longitude" required><br><br>\
+                            <button type="submit">Create New City</button>\
+                        </form><br><br>\
+                        <i class="icon fas fa-bahai"></i><i class="icon fas fa-city"></i>\
+                        <h3>Delete City By Name</h3>\
+                        <form action="/removeCityByName" method="POST">\
+                            <label for="cityName">City Name:</label>\
+                            <input type="text" id="cityName" name="cityName" required>\
+                            <button type="submit">Delete City</button>\
+                        </form>\
+                    </div>';
+            document.getElementById('WhereInsertCitiesCardGoes').innerHTML = insertCitiesCard;
+
+
+        });
+        document.getElementById('insertTeams').addEventListener('click', function(event) {
+            event.preventDefault();
+            const insertTeamsCard ='<div class="card"><i class="icon fas fa-football-ball"></i>\
+                        <h3>Create New Team</h3>\
+                        <form action="/createTeam" method="POST">\
+                            <label for="TeamName">Team Name:</label>\
+                            <input type="text" id="TeamName" name="TeamName" required><br><br>\
+                            <label for="HomeStadium">Home Stadium Name:</label>\
+                            <input type="text" id="HomeStadium" name="HomeStadium" required><br><br>\
+                            <label for="HomeCityID">Home City ID:</label>\
+                            <input type="number" id="HomeCityID" name="HomeCityID" required><br><br>\
+                            <button type="submit">Create New Team</button>\
+                        </form>\
+                        <br><br>\
+                        <i class="icon fas fa-bahai"></i><i class="icon fas fa-football-ball"></i>\
+                        <h3>Delete Team By Name</h3>\
+                        <form action="/removeTeamByName" method="POST">\
+                            <label for="teamName">Team Name:</label>\
+                            <input type="text" id="teamName" name="teamName" required><br><br>\
+                            <button type="submit">Remove Team by Name</button>\
+                        </form>\
+                    </div>';
+            document.getElementById('WhereInsertTeamsCardGoes').innerHTML = insertTeamsCard;
+        });
+    </script>
+
+</body>
+</html>

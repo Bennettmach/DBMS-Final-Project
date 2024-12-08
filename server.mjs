@@ -3,12 +3,14 @@ import ejs from 'ejs';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 //require('dotenv').config(); // For loading environment variables
-import {getCity, getCities, getDate, getTeam, createCity, removeCity, updateCityName} from "./database.mjs"
+import {getCity, getCities, getDate, getTeam, createCity, removeCity, updateCityName, removeCityByName, removeTeamByName, createAdmin, createTeam, createTeamByStadiumName} from "./database.mjs"
 import path from 'path';
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
+
 // Initialize Express app
 const app = express();
+app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
@@ -24,6 +26,10 @@ app.get("/", async (req, res) => {
 
 app.get("/test", (req, res) => {
     res.render('test')
+})
+
+app.get("/admin", (req, res) => {
+    res.render('AdminDashboard')
 })
 
 //app.get("/api/data", (req, res) => {
@@ -44,7 +50,6 @@ app.get("/cities", async (req, res) => {
     res.send(notes);
 })
 
-
 app.get("/team", async (req, res) => {
     const notes = await getTeam("Dallas Cowboys");
     console.log(notes)
@@ -64,11 +69,42 @@ app.get("/removeCity", async (req, res) => {
     res.send(notes)
 })
 
+app.post("/removeCityByName", async (req, res) => {
+    const { cityName} = req.body;
+    const notes = await removeCityByName(cityName);
+    res.send('City:' + cityName +  ' successfully removed from the database!');
+})
+
+app.post("/removeTeamByName", async (req, res) => {
+    const { teamName} = req.body;
+    const notes = await removeTeamByName(teamName);
+    res.send('Team:' + teamName +  ' successfully removed from the database!');
+})
+
+app.post("/createAdmin", async (req, res) => {
+    const { Username, Password} = req.body;
+    const notes = await createAdmin(Username, Password);
+    res.send('Admin:' + Username + "successfully created!");
+})
+
 app.post('/createCity', async (req, res) => {
-    const { city, state } = req.body;
+    const { city, state, latitude, longitude } = req.body;
     // Insert data into the database
-    const placeholder = await createCity(city, state, "0.00", "0.00");
-    res.send('Data successfully saved to the database!');
+    const placeholder = await createCity(city, state, latitude, longitude);
+    res.send('New City successfully saved to the database!');
+});
+
+app.post('/createTeam', async (req, res) => {
+    const { TeamName, HomeStadium, HomeCityID} = req.body;
+    // Insert data into the database
+    const placeholder = await createTeamByStadiumName(TeamName, HomeStadium, HomeCityID);
+    res.send('New Team successfully saved to the database!');
+});
+
+app.post('/testGetCities', async (req, res) => {
+    const data = await getCities();
+    res.send(data)
+    //res.send('Data successfully saved to the database!');
 });
 
 app.post('/updateCityName', async (req, res) => {
