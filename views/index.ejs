@@ -4,7 +4,12 @@
   <head>
     <script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.js"></script>
     <link rel="stylesheet" href="/static/index.css">
+<<<<<<< HEAD
     <script type="text/javascript" src="/static/Table.mjs" ></script>
+=======
+    <script type="text/javascript" src="/static/Table.js" ></script>   
+    <script type="module" src="/javascript/database.mjs"></script>
+>>>>>>> b4e9fcd59b8f1998a95593b85e356540f1d51346
     <%- include('Components/navbar.ejs') %>
 
     <!-- Map API-->
@@ -22,14 +27,14 @@
     <script>window.ENV_VARIABLE = 'developer.here.com'</script><script src='/Static/Map.js'></script>
   </head>
     <div class="tableBox">
-      <h2>Games</h2>
+      <h2>      Games     </h2>
       <form id="form" method="POST">
         <h4>Filters:</h4>
         <label for="date">Date: </label>
         <input type="text" name="date" id="date">
         <label for="team">Team: </label>
         <input type="text" name="team" id="team">
-        <input type="submit" value="Submit">
+        <input class="button-2" type="submit" value="Submit">
       </form>
       <!--table placeholder element-->
       <div id="myGrid" class="ag-theme-quartz" style="height: 500px; color:black"></div>
@@ -40,7 +45,7 @@
         <h4>Filters:</h4>
         <label for="dist">Max distance from stadium: </label>
         <input type="text" name="dist" id="dist">
-        <input type="submit" value="Submit">
+        <input class="button-2" type="submit" value="Submit">
       </form>
     </div>
     <!--

@@ -5,8 +5,8 @@ dotenv.config();
 const pool = mysql.createPool({
     host: '127.0.0.1',
     user: 'root',
-    password: 'password',
-    database: 'DBMS'
+    password: '3141Unitedstates!',
+    database: 'dbms'
 }).promise()
 
 export async function getCities(){
@@ -22,6 +22,13 @@ export async function getCity(CityID){
 export async function createCity(CityName, State, Lat, Lon){
     const result = await pool.query(`
     INSERT INTO Cities (CityName, State, Lat, Lon) VALUES (?, ?, ?, ?)`, [CityName, State, Lat, Lon])
+    return result + "City Inserted";
+}
+
+export async function updateCityName(cityName, newName){
+    console.log(cityName, newName)
+    const result = await pool.query(`
+    UPDATE Cities SET CityName = ? WHERE CityName = ?`, [newName, cityName])
     return result + "City Inserted";
 }
 
