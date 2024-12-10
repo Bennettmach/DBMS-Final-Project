@@ -63,17 +63,7 @@
     </form>
 </div>
 
-<table>
-  <% if (data && data.length > 0) { %>
-    <% data.forEach(entry => { %>
-      <tr>
-        <td><%= entry.CityName %></td>
-        <td><%= entry.State %></td>
-        <td><%= entry.Lat + ' ' + entry.Lon %></td>
-      </tr>
-    <% })} %>
 
-</table>
 
 <script>
     function alertInput() {
@@ -84,36 +74,44 @@
 
 <script>
     async function fetchCityData() {
-        const userInputCity = document.getElementById("myInput").value;
-      try {
-        // Make an API fetch request (replace with your actual API URL)
-        const response = await fetch("http://localhost:4000/city/"+ userInputCity)
-        //console.log("http://localhost:4000/city/"+ userInputCity)
+    const userInputState = document.getElementById("myInput").value.trim(); // Get the state input
+    try {
+        // Make an API fetch request
+        const response = await fetch("http://localhost:4000/cities"); // Adjusted to fetch all cities
 
-        if(!response.ok){
-          const errorMessage = `Error: ${response.status} ${response.statusText}`;
-          throw new Error(errorMessage);
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status} ${response.statusText}`);
         }
 
-        data = JSON.parse(response.body);
-        //const data = await response.json(); // Assuming the API returns JSON data
+        const data = await response.json(); // Parse the JSON response
 
-        // Output the data to the console
-        //console.log('API Response1:', data1);
+   
+        const filteredCities = data.filter(city => city.State.toLowerCase() === userInputState.toLowerCase());
 
-        // Optionally, display the response on the page (if needed)
-        //document.getElementById('apiData').innerHTML = JSON.stringify(data1, null, 2);
+        
+        const cityDataContainer = document.getElementById("cityData");
+        cityDataContainer.innerHTML = ""; 
 
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
+        if (filteredCities.length > 0) {
+
+            filteredCities.forEach(city => {
+                const cityRow = `<p>${city.CityName} - ${city.State}</p>`;
+                cityDataContainer.innerHTML += cityRow;
+            });
+        } else {
+            cityDataContainer.innerHTML = "<p>No cities found for the given state.</p>";
+        }
+
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        document.getElementById("cityData").innerHTML = `<p>Error fetching data: ${error.message}</p>`;
     }
-    
+  }   
 </script>
 
 
   <!-- Display data (optional) -->
-  <div id="apiData"></div>
+  <div id="cityData"></div>
   <div id="apiData2"></div>
 
 
