@@ -63,6 +63,18 @@
     </form>
 </div>
 
+<table>
+  <% if (data && data.length > 0) { %>
+    <% data.forEach(entry => { %>
+      <tr>
+        <td><%= entry.CityName %></td>
+        <td><%= entry.State %></td>
+        <td><%= entry.Lat + ' ' + entry.Lon %></td>
+      </tr>
+    <% })} %>
+
+</table>
+
 <script>
     function alertInput() {
         const userInput = document.getElementById("myInput").value;
@@ -76,19 +88,21 @@
       try {
         // Make an API fetch request (replace with your actual API URL)
         const response = await fetch("http://localhost:4000/city/"+ userInputCity)
-        console.log("http://localhost:4000/city/"+ userInputCity)
+        //console.log("http://localhost:4000/city/"+ userInputCity)
 
         if(!response.ok){
-            throw new Error('Shit broke')
+          const errorMessage = `Error: ${response.status} ${response.statusText}`;
+          throw new Error(errorMessage);
         }
 
-        const data1 = await response.json(); // Assuming the API returns JSON data
+        data = JSON.parse(response.body);
+        //const data = await response.json(); // Assuming the API returns JSON data
 
         // Output the data to the console
-        console.log('API Response1:', data1);
+        //console.log('API Response1:', data1);
 
         // Optionally, display the response on the page (if needed)
-        document.getElementById('apiData').innerHTML = JSON.stringify(data1, null, 2);
+        //document.getElementById('apiData').innerHTML = JSON.stringify(data1, null, 2);
 
       } catch (error) {
         console.error('Error fetching data:', error);
