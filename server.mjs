@@ -18,8 +18,14 @@ console.log('Serving static files from:', path.join(__dirname, 'public'));
 
 app.set('view engine', 'ejs')
 
-app.get("/", (req, res) => {
-    res.render('index.ejs')
+app.get("/", async (req, res) => {
+    const result = await getCities();
+    console.log(result);
+    res.render('index.ejs', {data: result});
+})
+
+app.get("/map", (req, res) => {
+    res.render("map.ejs")
 })
 
 app.get("/test", async (req, res) => {
