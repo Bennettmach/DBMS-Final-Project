@@ -3,7 +3,11 @@ import ejs from 'ejs';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 //require('dotenv').config(); // For loading environment variables
-import {getCity, getCities, getDate, getTeam, createCity, removeCity, updateCityName, removeCityByName, removeTeamByName, createAdmin, createTeam, createTeamByStadiumName} from "./database.mjs"
+import {getCity, getCities, getDate, getTeam, createCity, removeCity, updateCityName, 
+    removeCityByName, removeTeamByName, createAdmin, createTeam, 
+    createTeamByStadiumNameAndCityName, removeAdminByName, createTicket, removeTicket, 
+    createStadium, removeStadiumByName, createGame, removeGame, removeAirport, createAirport,
+    updateGame} from "./database.mjs"
 import path from 'path';
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
@@ -50,6 +54,7 @@ app.get("/cities", async (req, res) => {
     res.send(notes);
 })
 
+
 app.get("/team", async (req, res) => {
     const notes = await getTeam("Dallas Cowboys");
     console.log(notes)
@@ -87,6 +92,70 @@ app.post("/createAdmin", async (req, res) => {
     res.send('Admin:' + Username + "successfully created!");
 })
 
+app.post("/createAirport", async (req, res) => {
+    console.log("made it here")
+    const { AirportName, CityName, Latitude, Longitude} = req.body;
+    const notes = await createAirport(AirportName, CityName, Latitude, Longitude);
+    res.send('Airport:' + AirportName + "successfully created!");
+})
+
+app.post("/removeAirport", async (req, res) => {
+    const { AirportName} = req.body;
+    const notes = await removeAirport(AirportName);
+    res.send('Airport:' + AirportName + "deleted!");
+})
+
+app.post("/createTicket", async (req, res) => {
+    const { GameID, Price, Section} = req.body;
+    const notes = await createTicket(GameID, Price, Section);
+    res.send('Ticket for GameID:' + GameID + "successfully created!");
+})
+
+app.post("/removeTicket", async (req, res) => {
+    const { GameID, Price, Section} = req.body;
+    const notes = await removeTicket(GameID, Price, Section);
+    res.send('Ticket for GameID:' + GameID + "deleted!");
+})
+
+app.post("/createStadium", async (req, res) =>{
+    const {StadiumName, CityName, Longitude, Latitude} = req.body;
+    const notes = await createStadium(StadiumName, CityName, Longitude, Latitude);
+    res.send("Stadium:" + StadiumName + "Successfully Created")
+})
+
+app.post("/removeStadiumByName", async (req, res) => {
+    const { StadiumName} = req.body;
+    const notes = await removeStadiumByName(StadiumName);
+    res.send('Stadium:' + StadiumName +  ' successfully removed from the database!');
+})
+
+app.post("/removeAdminByName", async (req, res) => {
+    const { adminName} = req.body;
+    const notes = await removeAdminByName(adminName);
+    res.send('Admin:' + adminName +  ' successfully removed from the database!');
+})
+
+app.post('/createGame', async (req, res) => {
+    const { Team1, Team2, Stadium, WinningTeam, Team1Score, Team2Score, Date } = req.body;
+    // Insert data into the database
+    const placeholder = await createGame(Team1, Team2, Stadium, WinningTeam, Team1Score, Team2Score, Date);
+    res.send('New Game successfully saved to the database!');
+});
+
+app.post('/removeGame', async (req, res) => {
+    const { Team1, Team2, Date } = req.body;
+    // Insert data into the database
+    const placeholder = await removeGame(Team1, Team2, Date);
+    res.send('Game deleted from database!');
+});
+
+app.post('/updateGame', async (req, res) => {
+    const { Team1, Team2, WinningTeam, Team1Score, Team2Score, Date } = req.body;
+    //console.log(cityName, newName)
+    const placeholder = await updateGame(Team1, Team2, WinningTeam, Team1Score, Team2Score, Date);
+    res.send('Data updated in the database!');
+});
+
 app.post('/createCity', async (req, res) => {
     const { city, state, latitude, longitude } = req.body;
     // Insert data into the database
@@ -95,9 +164,9 @@ app.post('/createCity', async (req, res) => {
 });
 
 app.post('/createTeam', async (req, res) => {
-    const { TeamName, HomeStadium, HomeCityID} = req.body;
+    const { TeamName, HomeStadium, HomeCity} = req.body;
     // Insert data into the database
-    const placeholder = await createTeamByStadiumName(TeamName, HomeStadium, HomeCityID);
+    const placeholder = await createTeamByStadiumNameAndCityName(TeamName, HomeStadium, HomeCity);
     res.send('New Team successfully saved to the database!');
 });
 

@@ -7,8 +7,7 @@
     <!-- Linking to a basic CSS file for styling -->
     <link rel="stylesheet" href="styles.css">
     <!-- Linking to a CDN for Font Awesome icons (for dashboard widgets) -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-    <!-- Some basic inline styles for simplicity -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">    <!-- Some basic inline styles for simplicity -->
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -90,11 +89,12 @@
         <div class="sidebar">
             <h2>Menu</h2>
             <a href="#" id = "insertCities"><i class="fas fa-cogs"></i> Create Or Delete Cities</a>
-            <a href="#"><i class="fas fa-cogs"></i> Create Or Update Games</a>
+            <a href="#" id = "insertGames"><i class="fas fa-cogs"></i> Create Or Delete Games</a>
+            <a href="#" id = "insertAirport"><i class="fas fa-cogs"></i> Create Or Delete Airport</a>
             <a href="#" id = "insertTeams"><i class="fas fa-cogs"></i> Create Or Delete Teams</a>
-            <a href="#"><i class="fas fa-cogs"></i> Create Or Update Stadiums</a>
-            <a href="#"><i class="fas fa-cogs"></i> Create Or Update Tickets</a>
-            <a href="#" id = "insertAdmin"><i class="fas fa-cogs"></i> Create New Admin</a>
+            <a href="#" id = "insertStadiums"><i class="fas fa-cogs"></i> Create Or Delete Stadiums</a>
+            <a href="#" id = "insertTickets"><i class="fas fa-cogs"></i> Create Or Delete Tickets</a>
+            <a href="#" id = "insertAdmin"><i class="fas fa-cogs"></i> Create Or Delete Admins</a>
 
         </div>
 
@@ -109,6 +109,11 @@
                 <div id="WhereInsertAdminCardGoes"></div>
                 <div id="WhereInsertCitiesCardGoes"></div>
                 <div id="WhereInsertTeamsCardGoes"></div>
+                <div id="WhereInsertTicketsCardGoes"></div>
+                <div id="WhereInsertStadiumsCardGoes"></div>
+                <div id="WhereInsertGamesCardGoes"></div>
+                <div id="WhereInsertAirportCardGoes"></div>
+
                 <div class="col">
                         
                 </div>
@@ -138,7 +143,14 @@
                                 <label for="Password">Password:</label>\
                                 <input type="text" id="Password" name="Password" required><br><br>\
                                 <button type="submit">Create New Admin User</button>\
-                            </form>\
+                            </form><br><br>\
+                        <i class="icon fas fa-bahai"></i><i class="icon fas fa-user"></i>\
+                        <h3>Delete Admin By Name</h3>\
+                        <form action="/removeAdminByName" method="POST">\
+                            <label for="adminName">Username:</label>\
+                            <input type="text" id="adminName" name="adminName" required> <br><br>\
+                            <button type="submit">Delete Admin</button>\
+                        </form>\
                         </div>';
             document.getElementById('WhereInsertAdminCardGoes').innerHTML = insertAdminCard;
         });
@@ -161,12 +173,11 @@
                         <h3>Delete City By Name</h3>\
                         <form action="/removeCityByName" method="POST">\
                             <label for="cityName">City Name:</label>\
-                            <input type="text" id="cityName" name="cityName" required>\
+                            <input type="text" id="cityName" name="cityName" required><br><br>\
                             <button type="submit">Delete City</button>\
                         </form>\
                     </div>';
             document.getElementById('WhereInsertCitiesCardGoes').innerHTML = insertCitiesCard;
-
 
         });
         document.getElementById('insertTeams').addEventListener('click', function(event) {
@@ -178,8 +189,8 @@
                             <input type="text" id="TeamName" name="TeamName" required><br><br>\
                             <label for="HomeStadium">Home Stadium Name:</label>\
                             <input type="text" id="HomeStadium" name="HomeStadium" required><br><br>\
-                            <label for="HomeCityID">Home City ID:</label>\
-                            <input type="number" id="HomeCityID" name="HomeCityID" required><br><br>\
+                            <label for="HomeCity">Home City Name:</label>\
+                            <input type="text" id="HomeCity" name="HomeCity" required><br><br>\
                             <button type="submit">Create New Team</button>\
                         </form>\
                         <br><br>\
@@ -193,6 +204,144 @@
                     </div>';
             document.getElementById('WhereInsertTeamsCardGoes').innerHTML = insertTeamsCard;
         });
+
+        document.getElementById('insertTickets').addEventListener('click', function(event) {
+            event.preventDefault();
+            const insertTicketsCard ='<div class="card"><i class="icon fas fa-ticket-alt"></i>\
+                        <h3>Create New Ticket</h3>\
+                        <form action="/createTicket" method="POST">\
+                            <label for="GameID">Game ID Number:</label>\
+                            <input type="number" id="GameID" name="GameID" required><br><br>\
+                            <label for="Price">Ticket Price:</label>\
+                            <input type="number" id="Price" name="Price" required><br><br>\
+                            <label for="Section">Section Name:</label>\
+                            <input type="text" id="Section" name="Section" required><br><br>\
+                            <button type="submit">Create New Ticket</button>\
+                        </form>\
+                        <br><br>\
+                        <i class="icon fas fa-bahai"></i><i class="icon fas fa-ticket-alt"></i>\
+                        <h3>Delete Ticket</h3>\
+                        <form action="/removeTicket" method="POST">\
+                            <label for="GameID">Game ID:</label>\
+                            <input type="number" id="GameID" name="GameID" required><br><br>\
+                            <label for="Price">Price:</label>\
+                            <input type="number" id="Price" name="Price" required><br><br>\
+                            <label for="Section">Section:</label>\
+                            <input type="text" id="Section" name="Section" required><br><br>\
+                            <button type="submit">Delete Ticket</button>\
+                        </form>\
+                    </div>';
+            document.getElementById('WhereInsertTicketsCardGoes').innerHTML = insertTicketsCard;
+        });        
+
+        document.getElementById('insertStadiums').addEventListener('click', function(event) {
+            event.preventDefault();
+            const insertStadiumsCard ='<div class="card"><i class="icon fa fa-archway"></i>\
+                        <h3>Create New Stadium</h3>\
+                        <form action="/createStadium" method="POST">\
+                            <label for="StadiumName">Stadium Name:</label>\
+                            <input type="text" id="StadiumName" name="StadiumName" required><br><br>\
+                            <label for="CityName">City Name:</label>\
+                            <input type="text" id="CityName" name="CityName" required><br><br>\
+                            <label for="Latitude">Latitude: </label>\
+                            <input type="text" id="Latitude" name="Latitude" required><br><br>\
+                            <label for="Longitude">Longitude: </label>\
+                            <input type="text" id="Longitude" name="Longitude" required><br><br>\
+                            <button type="submit">Create New Stadium</button>\
+                        </form>\
+                        <br><br>\
+                        <i class="icon fas fa-bahai"></i><i class="icon fa fa-archway"></i>\
+                        <h3>Delete Stadium</h3>\
+                        <form action="/removeStadiumByName" method="POST">\
+                            <label for="StadiumName">Stadium Name:</label>\
+                            <input type="text" id="StadiumName" name="StadiumName" required><br><br>\
+                            <button type="submit">Delete Stadium</button>\
+                        </form>\
+                    </div>';
+            document.getElementById('WhereInsertStadiumsCardGoes').innerHTML = insertStadiumsCard;
+        });       
+        document.getElementById('insertGames').addEventListener('click', function(event) {
+            event.preventDefault();
+            const insertGamesCard ='<div class="card"><i class="icon fas fa-gamepad"></i>\
+                        <h3>Create New Game</h3>\
+                        <form action="/createGame" method="POST">\
+                            <label for="Team1">Team #1 Name:</label>\
+                            <input type="text" id="Team1" name="Team1" required><br><br>\
+                            <label for="Team2">Team #2 Name:</label>\
+                            <input type="text" id="Team2" name="Team2" required><br><br>\
+                            <label for="Stadium">Stadium Name: </label>\
+                            <input type="text" id="Stadium" name="Stadium" required><br><br>\
+                            <label for="WinningTeam">Winning Team: </label>\
+                            <input type="text" id="WinningTeam" name="WinningTeam"><br><br>\
+                            <label for="Team1Score">Team 1 Final Score: </label>\
+                            <input type="text" id="Team1Score" name="Team1Score"><br><br>\
+                            <label for="Team2Score">Team 2 Final Score: </label>\
+                            <input type="text" id="Team2Score" name="Team2Score"><br><br>\
+                            <label for="Date">Date: </label>\
+                            <input type="date" id="Date" name="Date" required><br><br>\
+                            <button type="submit">Create New Game</button>\
+                        </form>\
+                        <br><br>\
+                        <i class="icon fas fa-bahai"></i><i class="icon fas fa-gamepad"></i>\
+                        <h3>Delete Game</h3>\
+                        <form action="/removeGame" method="POST">\
+                            <label for="Team1">Team #1 Name:</label>\
+                            <input type="text" id="Team1" name="Team1" required><br><br>\
+                            <label for="Team2">Team #2 Name:</label>\
+                            <input type="text" id="Team2" name="Team2" required><br><br>\
+                            <label for="Date">Date: </label>\
+                            <input type="date" id="Date" name="Date" required><br><br>\
+                            <button type="submit">Delete Game</button>\
+                        </form>\
+                        <br><br>\
+                        <i class="icon fa fa-refresh"></i><i class="icon fas fa-gamepad"></i>\
+                        <h3>Update Scores and Winner of Existing Game</h3>\
+                        <form action="/updateGame" method="POST">\
+                            <h4>Which Game To Update</h4>\
+                            <label for="Team1">Team #1 Name:</label>\
+                            <input type="text" id="Team1" name="Team1" required><br><br>\
+                            <label for="Team2">Team #2 Name:</label>\
+                            <input type="text" id="Team2" name="Team2" required><br><br>\
+                            <label for="Date">Date: </label>\
+                            <input type="date" id="Date" name="Date" required><br><br>\
+                            <h4>New Scores and Winner</h4>\
+                            <label for="WinningTeam">Winning Team: </label>\
+                            <input type="text" id="WinningTeam" name="WinningTeam" required><br><br>\
+                            <label for="Team1Score">Team 1 Final Score: </label>\
+                            <input type="text" id="Team1Score" name="Team1Score" required><br><br>\
+                            <label for="Team2Score">Team 2 Final Score: </label>\
+                            <input type="text" id="Team2Score" name="Team2Score" required><br><br>\
+                            <button type="submit">Update Game</button>\
+                        </form>\
+                    </div>';
+            document.getElementById('WhereInsertGamesCardGoes').innerHTML = insertGamesCard;
+        });       
+        document.getElementById('insertAirport').addEventListener('click', function(event) {
+            event.preventDefault();
+            const insertAirportCard ='<div class="card"><i class="icon fa fa-paper-plane"></i>\
+                        <h3>Create New Airport</h3>\
+                        <form action="/createAirport" method="POST">\
+                            <label for="AirportName">Airport Name:</label>\
+                            <input type="text" id="AirportName" name="AirportName" required><br><br>\
+                            <label for="CityName">City Name:</label>\
+                            <input type="text" id=CityName" name="CityName" required><br><br>\
+                            <label for="Latitude">Latitude: </label>\
+                            <input type="text" id="Latitude" name="Latitude" required><br><br>\
+                            <label for="Longitude">Longitude: </label>\
+                            <input type="text" id="Longitude" name="Longitude" required><br><br>\
+                            <button type="submit">Create New Airport</button>\
+                        </form>\
+                        <br><br>\
+                        <i class="icon fas fa-bahai"></i><i class="icon fa fa-paper-plane"></i>\
+                        <h3>Delete Airport</h3>\
+                        <form action="/removeAirport" method="POST">\
+                            <label for="AirportName">Airport Name:</label>\
+                            <input type="text" id="AirportName" name="AirportName" required><br><br>\
+                            <button type="submit">Delete Airport</button>\
+                        </form>\
+                    </div>';
+            document.getElementById('WhereInsertAirportCardGoes').innerHTML = insertAirportCard;
+        });       
     </script>
 
 </body>
