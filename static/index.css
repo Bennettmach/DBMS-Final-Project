@@ -14,8 +14,10 @@ code {
     monospace;
 }
 
+
+
 .tableBox {
-  background: #181c29; 
+  background: #191c28; 
   border-radius: 15;
 }
 
@@ -31,10 +33,10 @@ code {
   padding-bottom: 15;
 }
 .button-2 {
-  background-color: rgba(51, 51, 51, 0.05);
+  background-color: #232222;
   border-radius: 8px;
   border-width: 0;
-  color: #9c9c9c;
+  color: #ffffff;
   cursor: pointer;
   display: inline-block;
   font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -51,4 +53,37 @@ code {
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
+}
+table {
+  
+  border-collapse: collapse;
+  margin-top: 20px;
+  height: 500px; 
+  width:100%;
+  overflow-y: scroll; 
+  display:block;
+  
+}
+
+th, td {
+  padding: 12px;
+  text-align: left;
+  border: 1px solid #444;
+}
+
+th {
+  background-color: #3a3f47; 
+  color: #f5f5f5; 
+}
+
+td {
+  background-color: #333; /* Dark background for table cells */
+}
+
+tr:nth-child(even) td {
+  background-color: #444; /* Lighter background for even rows */
+}
+
+tr:hover td {
+  background-color: #555; /* Highlight row on hover */
 }
