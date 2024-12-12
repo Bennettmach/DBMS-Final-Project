@@ -24,7 +24,15 @@ console.log('Serving static files from:', path.join(__dirname, 'public'));
 app.set('view engine', 'ejs')
 
 app.get("/", async (req, res) => {
-    res.render('index.ejs')
+    const result = await getCities();
+    console.log(result);
+    res.render('index.ejs', {data: result});
+})
+
+app.get("/map", async (req, res) => {
+    const result = await getAirports();
+    console.log(result);
+    res.render("map.ejs", {data: result});
 })
 
 app.get("/test", async (req, res) => {
@@ -41,6 +49,13 @@ app.get("/admin", (req, res) => {
 //    const data = {message: "This is the message"};
 //    res.json(data)
 //})
+app.get("airport/:range", async (req, res) => {
+    const range = req.params.range;
+    const result = await getAirports(range);
+    console.log(range);
+    console.log(result);
+    res.render('test', {data: result})
+})
 
 app.get("/city/:state", async (req, res) => {
     const state = req.params.state;

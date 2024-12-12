@@ -30,7 +30,7 @@
     "yup": "^1.4.0"
   },
   "scripts": {
-    "start": "node server.mjs"
+    "start": "set NODE_ENV=dev && node server.mjs"
   },
   "eslintConfig": {
     "extends": [

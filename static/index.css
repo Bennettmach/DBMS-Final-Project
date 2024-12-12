@@ -30,6 +30,26 @@ code {
 .tableBox input {
   padding-bottom: 15;
 }
+
+
+.google-map {
+  padding-bottom: 50%;
+  position: relative;
+}
+
+.google-map iframe {
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+  position: absolute;
+}
+
+.map {
+  height: 100%;
+  width: 100%;
+}
+
 .button-2 {
   background-color: rgba(51, 51, 51, 0.05);
   border-radius: 8px;
