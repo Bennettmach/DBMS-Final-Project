@@ -32,6 +32,26 @@ code {
 .tableBox input {
   padding-bottom: 15;
 }
+
+
+.google-map {
+  padding-bottom: 50%;
+  position: relative;
+}
+
+.google-map iframe {
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+  position: absolute;
+}
+
+.map {
+  height: 100%;
+  width: 100%;
+}
+
 .button-2 {
   background-color: #232222;
   border-radius: 8px;
@@ -53,6 +73,7 @@ code {
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
+
 }
 table {
   
@@ -86,4 +107,5 @@ tr:nth-child(even) td {
 
 tr:hover td {
   background-color: #555; /* Highlight row on hover */
+
 }

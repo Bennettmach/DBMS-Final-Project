@@ -63,7 +63,16 @@
     </form>
 </div>
 
-
+<table>
+  <% if (data && data.length > 0) { %>
+    <% data.forEach(entry => { %>
+      <tr>
+        <td><%= entry.CityName %></td>
+        <td><%= entry.State %></td>
+        <td><%= entry.Lat + ' ' + entry.Lon %></td>
+      </tr>
+    <% })} %>
+</table>
 
 <script>
     function alertInput() {
