@@ -5,8 +5,8 @@ dotenv.config();
 const pool = mysql.createPool({
     host: '127.0.0.1',
     user: 'root',
-    password: 'password',
-    database: 'DBMS'
+    //password: 'password',
+    database: 'dbms'
 }).promise()
 
 export async function getCities(){
@@ -194,7 +194,8 @@ export async function getGames(filters) {
             s.StadiumName AS Stadium,
             g.Score1,
             g.Score2,
-            t3.TeamName AS Winner
+            t3.TeamName AS Winner,
+            g.StadiumID
         FROM Games g
         JOIN Teams t1 ON g.TeamID1 = t1.TeamID
         JOIN Teams t2 ON g.TeamID2 = t2.TeamID
@@ -232,10 +233,10 @@ export async function getGames(filters) {
     }
 }
 
- export async function getAirports(range = 1000) {
+ export async function getAirports(range, stadiumID) {
     const result = await pool.query(
-        'Select DISTINCT a.* From games g Join stadiums s on g.StadiumID = s.StadiumID Join cities c on c.CityID = s.CID JOIN airports a on a.CityID = c.CityID Where ST_Distance_Sphere(point(a.Lon , a.Lat), point(-80,41)) * .000621371192 < ?;',
-        [range])
+        `SELECT a.* FROM Stadiums s JOIN Cities c ON c.CityID = s.CID JOIN Airports a ON a.CityID = c.CityID WHERE s.StadiumID = ? AND ST_Distance_Sphere(point(a.Lon, a.Lat), point(s.Lon, s.Lat)) * 0.000621371192 < ?;`,
+        [stadiumID, range])
     return result[0]
  }
 

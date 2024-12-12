@@ -7,7 +7,7 @@ import {getCity, getCities, getDate, getTeam, createCity, removeCity, updateCity
     removeCityByName, removeTeamByName, createAdmin, createTeam, 
     createTeamByStadiumNameAndCityName, removeAdminByName, createTicket, removeTicket, 
     createStadium, removeStadiumByName, createGame, removeGame, removeAirport, createAirport,
-    updateGame, getGames} from "./database.mjs"
+    updateGame, getGames, getAirports} from "./database.mjs"
 
 import path from 'path';
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
@@ -30,21 +30,17 @@ app.get("/", async (req, res) => {
 
     try {
         const games = await getGames({}); // Fetch all games without filters
-        res.render('index.ejs', { games });
+        res.render('index.ejs', { games:games });
     } catch (error) {
         console.error("Error fetching games for index:", error);
         res.render('index.ejs', { games: [] }); // Render an empty list if there's an error
     }
 });
 
-app,get("/cities", async (req, res) => {
-    const result = await getCities();
-    console.log(result);
-    res.render('index.ejs', {data: result});
-})
 
-app.get("/map", async (req, res) => {
-    const result = await getAirports();
+app.get("/map/:stadium", async (req, res) => {
+    const stadium = req.params.stadium;
+    const result = await getAirports(500,stadium);
     console.log(result);
     res.render("map.ejs", {data: result});
 })
