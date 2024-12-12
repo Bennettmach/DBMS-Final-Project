@@ -98,8 +98,12 @@ app.get("/games", async (req, res) => {
     }
 });
 
-
-
+app.get("/adminLogin/:username/:password", async (req, res) => {
+    const { username, password } = req.params;
+    const result = await checkAdminLogin(username, password);
+    console.log(result);
+    res.render('AdminDashboard', { boolean: result });
+})
 
 app.get("/team", async (req, res) => {
     const notes = await getTeam("Dallas Cowboys");
@@ -206,7 +210,7 @@ app.post('/createCity', async (req, res) => {
     const { city, state, latitude, longitude } = req.body;
     // Insert data into the database
     const placeholder = await createCity(city, state, latitude, longitude);
-    res.send('New City successfully saved to the database!');
+    res.render('New City successfully saved to the database!');
 });
 
 app.post('/createTeam', async (req, res) => {

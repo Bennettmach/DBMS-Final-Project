@@ -5,8 +5,8 @@ dotenv.config();
 const pool = mysql.createPool({
     host: '127.0.0.1',
     user: 'root',
-    //password: 'password',
-    database: 'dbms'
+    password: '',
+    database: 'dbproject'
 }).promise()
 
 export async function getCities(){
@@ -174,6 +174,12 @@ export async function getDate(date) {
     const result = await pool.query(
         `SELECT g.* FROM Games g WHERE g.GameDate = ?`, [date])
     return result[0]
+}
+
+export async function checkAdminLogin(username, password){
+    const result = await pool.query(`
+        SELECT * FROM LoginInfo WHERE Username = ? AND HashedPass = ?`, [username, password])
+        //More here
 }
 
 // export async function getCity(city) {

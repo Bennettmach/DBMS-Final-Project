@@ -95,7 +95,6 @@
             <a href="#" id = "insertStadiums"><i class="fas fa-cogs"></i> Create Or Delete Stadiums</a>
             <a href="#" id = "insertTickets"><i class="fas fa-cogs"></i> Create Or Delete Tickets</a>
             <a href="#" id = "insertAdmin"><i class="fas fa-cogs"></i> Create Or Delete Admins</a>
-
         </div>
 
         <!-- Main Content Section -->
@@ -113,7 +112,6 @@
                 <div id="WhereInsertStadiumsCardGoes"></div>
                 <div id="WhereInsertGamesCardGoes"></div>
                 <div id="WhereInsertAirportCardGoes"></div>
-
                 <div class="col">
                         
                 </div>
@@ -121,11 +119,11 @@
 
             <!-- Activity Section -->
             <div class="card">
-                <h3>Recent Activity</h3>
+                <h3>Admin Login</h3>
                 <ul>
-                    <li>City "Nacogdoches" Was Created</li>
-                    <li>Admin "Talmidge" was Created</li>
-                    <li>Game "2016 Playoffs" was created</li>
+                    <button onclick="adminLogin()">Login:</button>
+                    <input type="text" id="username" placeholder="Username:">
+                    <input type="text" id="password" placeholder="Password:">
                 </ul>
             </div>
         </div>
@@ -342,6 +340,18 @@
                     </div>';
             document.getElementById('WhereInsertAirportCardGoes').innerHTML = insertAirportCard;
         });       
+
+        
+    function adminLogin() {
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+        //This isnt complete yet. Look at server.js function for adminLogin and database function for checkAdminLogin
+        //Idea at the moment is input fields for username and password and get call. May be better to use a form?
+        //use alert like below to communicate to user if the login worked.
+        
+        alert("You entered: " + username + password);
+    }
+
     </script>
 
 </body>
