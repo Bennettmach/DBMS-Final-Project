@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 //require('dotenv').config(); // For loading environment variables
-import {getCity, getCities, getDate, getTeam, createCity, removeCity, updateCityName} from "./database.mjs"
+import {getCity, getCities, getDate, getTeam, createCity, removeCity, updateCityName, getAirports} from "./database.mjs"
 import path from 'path';
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
@@ -24,8 +24,10 @@ app.get("/", async (req, res) => {
     res.render('index.ejs', {data: result});
 })
 
-app.get("/map", (req, res) => {
-    res.render("map.ejs")
+app.get("/map", async (req, res) => {
+    const result = await getAirports();
+    console.log(result);
+    res.render("map.ejs", {data: result});
 })
 
 app.get("/test", async (req, res) => {
@@ -38,6 +40,13 @@ app.get("/test", async (req, res) => {
 //    const data = {message: "This is the message"};
 //    res.json(data)
 //})
+app.get("airport/:range", async (req, res) => {
+    const range = req.params.range;
+    const result = await getAirports(range);
+    console.log(range);
+    console.log(result);
+    res.render('test', {data: result})
+})
 
 app.get("/city/:state", async (req, res) => {
     const state = req.params.state;
