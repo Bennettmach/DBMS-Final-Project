@@ -7,7 +7,7 @@ import {getCity, getCities, getDate, getTeam, createCity, removeCity, updateCity
     removeCityByName, removeTeamByName, createAdmin, createTeam, 
     createTeamByStadiumNameAndCityName, removeAdminByName, createTicket, removeTicket, 
     createStadium, removeStadiumByName, createGame, removeGame, removeAirport, createAirport,
-    updateGame} from "./database.mjs"
+    updateGame, getGames} from "./database.mjs"
 
 import path from 'path';
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
@@ -37,7 +37,7 @@ app.get("/", async (req, res) => {
     }
 });
 
-
+app,get("/cities", async (req, res) => {
     const result = await getCities();
     console.log(result);
     res.render('index.ejs', {data: result});
