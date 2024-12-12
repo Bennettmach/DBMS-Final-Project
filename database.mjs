@@ -181,12 +181,64 @@ export async function getDate(date) {
 //         `SELECT g.* FROM Games g JOIN Stadiums s ON g.StadiumID = s.StadiumID JOIN Cities c on s.StadiumID = c.CityID WHERE c.CityName = ?`
 //         ,[city])
 // }
+
+
+export async function getGames(filters) {
+    const { startDate, endDate, team, stadium } = filters;
+
+    let query = `
+        SELECT 
+            g.GameDate,
+            t1.TeamName AS Team1,
+            t2.TeamName AS Team2,
+            s.StadiumName AS Stadium,
+            g.Score1,
+            g.Score2,
+            t3.TeamName AS Winner
+        FROM Games g
+        JOIN Teams t1 ON g.TeamID1 = t1.TeamID
+        JOIN Teams t2 ON g.TeamID2 = t2.TeamID
+        JOIN Stadiums s ON g.StadiumID = s.StadiumID
+        LEFT JOIN Teams t3 ON g.Winner = t3.TeamID
+        WHERE 1=1
+    `;
+
+    const params = [];
+    if (startDate && endDate) {
+        query += " AND g.GameDate BETWEEN ? AND ?";
+        params.push(startDate, endDate);
+    } else if (startDate) {
+        query += " AND g.GameDate = ?";
+        params.push(startDate);
+    }
+
+    if (team) {
+        query += ` AND (g.TeamID1 IN (SELECT TeamID FROM Teams WHERE TeamName LIKE ?)
+                        OR g.TeamID2 IN (SELECT TeamID FROM Teams WHERE TeamName LIKE ?))`;
+        params.push('%' + team + '%', '%' + team + '%');
+    }
+
+    if (stadium) {
+        query += " AND g.StadiumID IN (SELECT StadiumID FROM Stadiums WHERE StadiumName LIKE ?)";
+        params.push('%' + stadium + '%', '%' + stadium + '%');
+    }
+
+    try {
+        const [rows] = await pool.query(query, params);
+        return rows;
+    } catch (error) {
+        console.error("Error querying games:", error);
+        throw error;
+    }
+}
+
  export async function getAirports(range = 1000) {
     const result = await pool.query(
         'Select DISTINCT a.* From games g Join stadiums s on g.StadiumID = s.StadiumID Join cities c on c.CityID = s.CID JOIN airports a on a.CityID = c.CityID Where ST_Distance_Sphere(point(a.Lon , a.Lat), point(-80,41)) * .000621371192 < ?;',
         [range])
     return result[0]
  }
+
 
 
 export default {}

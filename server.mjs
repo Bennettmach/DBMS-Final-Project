@@ -2,11 +2,13 @@ import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 //require('dotenv').config(); // For loading environment variables
+
 import {getCity, getCities, getDate, getTeam, createCity, removeCity, updateCityName, 
     removeCityByName, removeTeamByName, createAdmin, createTeam, 
     createTeamByStadiumNameAndCityName, removeAdminByName, createTicket, removeTicket, 
     createStadium, removeStadiumByName, createGame, removeGame, removeAirport, createAirport,
     updateGame} from "./database.mjs"
+
 import path from 'path';
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
@@ -23,7 +25,19 @@ console.log('Serving static files from:', path.join(__dirname, 'public'));
 
 app.set('view engine', 'ejs')
 
+
 app.get("/", async (req, res) => {
+
+    try {
+        const games = await getGames({}); // Fetch all games without filters
+        res.render('index.ejs', { games });
+    } catch (error) {
+        console.error("Error fetching games for index:", error);
+        res.render('index.ejs', { games: [] }); // Render an empty list if there's an error
+    }
+});
+
+
     const result = await getCities();
     console.log(result);
     res.render('index.ejs', {data: result});
@@ -35,10 +49,14 @@ app.get("/map", async (req, res) => {
     res.render("map.ejs", {data: result});
 })
 
+
 app.get("/test", async (req, res) => {
     const result = await getCities();
     console.log(result);
     res.render('test', { data: result });
+})
+app.get('/adminlogin', (req, res) => {
+    res.render('adminlogin'); 
 })
 
 app.get("/admin", (req, res) => {
@@ -69,6 +87,22 @@ app.get("/cities", async (req, res) => {
     console.log(notes)
     res.send(notes);
 })
+app.get("/games", async (req, res) => {
+    const { startDate, endDate, team, stadium } = req.query;
+
+    const filters = { startDate, endDate, team, stadium };
+
+    try {
+        const rows = await getGames(filters);
+        console.log("Games retrieved:", rows); // For debugging
+        res.json(rows); // Send the filtered games
+    } catch (error) {
+        console.error("Error fetching games:", error);
+        res.status(500).send("Server error");
+    }
+});
+
+
 
 
 app.get("/team", async (req, res) => {
