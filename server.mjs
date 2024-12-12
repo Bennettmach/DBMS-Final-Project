@@ -7,7 +7,7 @@ import {getCity, getCities, getDate, getTeam, createCity, removeCity, updateCity
     removeCityByName, removeTeamByName, createAdmin, createTeam, 
     createTeamByStadiumNameAndCityName, removeAdminByName, createTicket, removeTicket, 
     createStadium, removeStadiumByName, createGame, removeGame, removeAirport, createAirport,
-    updateGame, getGames} from "./database.mjs"
+    updateGame, getGames, login} from "./database.mjs"
 
 import path from 'path';
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
@@ -37,11 +37,11 @@ app.get("/", async (req, res) => {
     }
 });
 
-app,get("/cities", async (req, res) => {
-    const result = await getCities();
-    console.log(result);
-    res.render('index.ejs', {data: result});
-})
+
+    // const result = await getCities();
+    // console.log(result);
+    // res.render('index.ejs', {data: result});
+
 
 app.get("/map", async (req, res) => {
     const result = await getAirports();
@@ -60,7 +60,11 @@ app.get('/adminlogin', (req, res) => {
 })
 
 app.get("/admin", (req, res) => {
-    res.render('AdminDashboard')
+    if (req.cookies && req.cookies.loggedIn === 'yes') {
+        res.render('AdminDashboard');
+    } else {
+        res.render('adminLogin');
+    }
 })
 
 //app.get("/api/data", (req, res) => {
@@ -232,6 +236,18 @@ app.post('/updateCityName', async (req, res) => {
     const placeholder = await updateCityName(cityName, newName)
     res.send('Data updated in the database!');
 });
+
+app.post('/login', async (req, res) => {
+    const {username, password} = req.body;
+    const awnser = await login(username, password)
+    if(awnser != []){
+        res.cookie("loggedIn", "yes")
+        res.render('AdminDashboard')
+    } else{
+        res.render('adminLogin')
+    }
+})
+
 
 // Define the PORT
 const port = 4000;
