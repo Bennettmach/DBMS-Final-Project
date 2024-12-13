@@ -70,7 +70,7 @@ app.get('/adminlogin', (req, res) => {
 
 app.get("/admin", (req, res) => {
     if (req.cookies && req.cookies.loggedIn === 'yes') {
-        res.render('AdminDashboard');
+        res.render('AdminDashboard', {message: null});
     } else {
         res.render('adminLogin');
     }
@@ -100,6 +100,7 @@ app.get("/cities", async (req, res) => {
     console.log(notes)
     res.send(notes);
 })
+
 app.get("/games", async (req, res) => {
     const { startDate, endDate, team, stadium } = req.query;
 
@@ -114,9 +115,6 @@ app.get("/games", async (req, res) => {
         res.status(500).send("Server error");
     }
 });
-
-
-
 
 app.get("/team", async (req, res) => {
     const notes = await getTeam("Dallas Cowboys");
@@ -134,103 +132,103 @@ app.get("/Date", async (req, res) => {
 app.get("/removeCity", async (req, res) => {
     const notes = await removeCity("Nacogdoches");
     console.log(notes)
-    res.send(notes)
+    res.render('AdminDashBoard.ejs');
 })
 
 app.post("/removeCityByName", async (req, res) => {
     const { cityName} = req.body;
     const notes = await removeCityByName(cityName);
-    res.send('City:' + cityName +  ' successfully removed from the database!');
+    res.render('AdminDashBoard.ejs');
 })
 
 app.post("/removeTeamByName", async (req, res) => {
     const { teamName} = req.body;
     const notes = await removeTeamByName(teamName);
-    res.send('Team:' + teamName +  ' successfully removed from the database!');
+    res.render('AdminDashBoard.ejs');
 })
 
 app.post("/createAdmin", async (req, res) => {
     const { Username, Password} = req.body;
     const notes = await createAdmin(Username, Password);
-    res.send('Admin:' + Username + "successfully created!");
+    res.render('AdminDashBoard.ejs');
 })
 
 app.post("/createAirport", async (req, res) => {
     console.log("made it here")
     const { AirportName, CityName, Latitude, Longitude} = req.body;
     const notes = await createAirport(AirportName, CityName, Latitude, Longitude);
-    res.send('Airport:' + AirportName + "successfully created!");
+    res.render('AdminDashBoard.ejs');
 })
 
 app.post("/removeAirport", async (req, res) => {
     const { AirportName} = req.body;
     const notes = await removeAirport(AirportName);
-    res.send('Airport:' + AirportName + "deleted!");
+    res.render('AdminDashBoard.ejs');
 })
 
 app.post("/createTicket", async (req, res) => {
     const { GameID, Price, Section} = req.body;
     const notes = await createTicket(GameID, Price, Section);
-    res.send('Ticket for GameID:' + GameID + "successfully created!");
+    res.render('AdminDashBoard.ejs');
 })
 
 app.post("/removeTicket", async (req, res) => {
     const { GameID, Price, Section} = req.body;
     const notes = await removeTicket(GameID, Price, Section);
-    res.send('Ticket for GameID:' + GameID + "deleted!");
+    res.render('AdminDashBoard.ejs');
 })
 
 app.post("/createStadium", async (req, res) =>{
     const {StadiumName, CityName, Longitude, Latitude} = req.body;
     const notes = await createStadium(StadiumName, CityName, Longitude, Latitude);
-    res.send("Stadium:" + StadiumName + "Successfully Created")
+    res.render('AdminDashBoard.ejs');
 })
 
 app.post("/removeStadiumByName", async (req, res) => {
     const { StadiumName} = req.body;
     const notes = await removeStadiumByName(StadiumName);
-    res.send('Stadium:' + StadiumName +  ' successfully removed from the database!');
+    res.render('AdminDashBoard.ejs');
 })
 
 app.post("/removeAdminByName", async (req, res) => {
     const { adminName} = req.body;
     const notes = await removeAdminByName(adminName);
-    res.send('Admin:' + adminName +  ' successfully removed from the database!');
+    res.render('AdminDashBoard.ejs');
 })
 
 app.post('/createGame', async (req, res) => {
     const { Team1, Team2, Stadium, WinningTeam, Team1Score, Team2Score, Date } = req.body;
     // Insert data into the database
     const placeholder = await createGame(Team1, Team2, Stadium, WinningTeam, Team1Score, Team2Score, Date);
-    res.send('New Game successfully saved to the database!');
+    res.render('AdminDashBoard.ejs');
 });
 
 app.post('/removeGame', async (req, res) => {
     const { Team1, Team2, Date } = req.body;
     // Insert data into the database
     const placeholder = await removeGame(Team1, Team2, Date);
-    res.send('Game deleted from database!');
+    res.render('AdminDashBoard.ejs');
 });
 
 app.post('/updateGame', async (req, res) => {
     const { Team1, Team2, WinningTeam, Team1Score, Team2Score, Date } = req.body;
     //console.log(cityName, newName)
     const placeholder = await updateGame(Team1, Team2, WinningTeam, Team1Score, Team2Score, Date);
-    res.send('Data updated in the database!');
+    res.render('AdminDashBoard.ejs');
 });
 
 app.post('/createCity', async (req, res) => {
     const { city, state, latitude, longitude } = req.body;
     // Insert data into the database
     const placeholder = await createCity(city, state, latitude, longitude);
-    res.send('New City successfully saved to the database!');
+    res.render('AdminDashboard.ejs');
 });
 
 app.post('/createTeam', async (req, res) => {
     const { TeamName, HomeStadium, HomeCity} = req.body;
     // Insert data into the database
     const placeholder = await createTeamByStadiumNameAndCityName(TeamName, HomeStadium, HomeCity);
-    res.send(placeholder);
+    res.render('AdminDashBoard.ejs');
 });
 
 app.post('/testGetCities', async (req, res) => {
@@ -243,7 +241,7 @@ app.post('/updateCityName', async (req, res) => {
     const { cityName, newName } = req.body;
     console.log(cityName, newName)
     const placeholder = await updateCityName(cityName, newName)
-    res.send('Data updated in the database!');
+    res.render('AdminDashBoard.ejs');
 });
 
 app.post('/login', async (req, res) => {

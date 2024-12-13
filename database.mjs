@@ -5,8 +5,8 @@ dotenv.config();
 const pool = mysql.createPool({
     host: '127.0.0.1',
     user: 'root',
-    password: 'password',
-    database: 'DBMS'
+    password: '',
+    database: 'dbproject'
 }).promise()
 
 export async function getCities(){
