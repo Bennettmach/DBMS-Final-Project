@@ -5,8 +5,8 @@ dotenv.config();
 const pool = mysql.createPool({
     host: '127.0.0.1',
     user: 'root',
-    password: '',
-    database: 'dbproject'
+    //password: '',
+    database: 'dbms'
 }).promise()
 
 export async function getCities(){
@@ -195,6 +195,7 @@ export async function getGames(filters) {
     let query = `
         SELECT 
             g.GameDate,
+            g.GameID,
             t1.TeamName AS Team1,
             t2.TeamName AS Team2,
             s.StadiumName AS Stadium,
@@ -243,6 +244,12 @@ export async function getGames(filters) {
     const result = await pool.query(
         `SELECT a.* FROM Stadiums s JOIN Cities c ON c.CityID = s.CID JOIN Airports a ON a.CityID = c.CityID WHERE s.StadiumID = ? AND ST_Distance_Sphere(point(a.Lon, a.Lat), point(s.Lon, s.Lat)) * 0.000621371192 < ?;`,
         [stadiumID, range])
+    return result[0]
+ }
+ export async function getTickets(GameID) {
+    const result = await pool.query(
+        `SELECT Price, Section FROM Tickets WHERE GameID = ?`,
+        [GameID])
     return result[0]
  }
 

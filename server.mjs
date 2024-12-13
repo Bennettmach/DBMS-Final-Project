@@ -7,7 +7,8 @@ import {getCity, getCities, getDate, getTeam, createCity, removeCity, updateCity
     removeCityByName, removeTeamByName, createAdmin, createTeam, 
     createTeamByStadiumNameAndCityName, removeAdminByName, createTicket, removeTicket, 
     createStadium, removeStadiumByName, createGame, removeGame, removeAirport, createAirport,
-    updateGame, getGames, getAirports} from "./database.mjs"
+    updateGame, getGames, getAirports,
+    getTickets} from "./database.mjs"
 
 import path from 'path';
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
@@ -58,7 +59,14 @@ app.get('/adminlogin', (req, res) => {
 app.get("/admin", (req, res) => {
     res.render('AdminDashboard')
 })
-
+app.get("/tickets/:ticket", async (req, res) => {
+    const ticket = req.params.ticket;
+    const result = await getTickets(ticket);
+    console.log(ticket);
+    console.log(result);
+    res.render('tickets',{data: result}); 
+    
+})
 //app.get("/api/data", (req, res) => {
 //    const data = {message: "This is the message"};
 //    res.json(data)
