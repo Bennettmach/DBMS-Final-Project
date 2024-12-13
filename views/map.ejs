@@ -42,6 +42,7 @@
                     <button class="button-2" onclick="fetchAirports()">Search</button>
                 </form>
                 <table id="airports">
+                    <th>Airports</th>
                     <% if (data && data.length > 0) { %>
                         <% data.forEach(entry => { %>
                             <tr>
