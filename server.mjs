@@ -44,8 +44,9 @@ app.get("/map/:stadium", async (req, res) => {
     console.log(result);
     res.render("map.ejs", {data: result});
 })
-app.get("/ticket/:ticket", async (req, res) => {
+app.get("/tickets/:ticket", async (req, res) => {
     const ticket = req.params.ticket;
+    console.log(ticket);
     const result = await getTickets(ticket);
     console.log(result);
     res.render("tickets.ejs", {data: result});
