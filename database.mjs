@@ -14,6 +14,13 @@ export async function getCities(){
     return rows;
 }
 
+export async function login(username, password){
+    const [rows] = await pool.query("SELECT * FROM admins WHERE username = ? AND password = ?", [username, password])
+    console.log(rows)
+    console.log(rows.length)
+    return rows.length == 1
+}
+
 export async function getCity(CityID){
     const [rows] = await pool.query(`SELECT * FROM Cities WHERE State = ?;`, [CityID])
     return rows;

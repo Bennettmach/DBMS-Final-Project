@@ -7,8 +7,7 @@ import {getCity, getCities, getDate, getTeam, createCity, removeCity, updateCity
     removeCityByName, removeTeamByName, createAdmin, createTeam, 
     createTeamByStadiumNameAndCityName, removeAdminByName, createTicket, removeTicket, 
     createStadium, removeStadiumByName, createGame, removeGame, removeAirport, createAirport,
-    updateGame, getGames, getAirports,
-    getTickets} from "./database.mjs"
+    updateGame, getGames, getAirports, login,getTickets} from "./database.mjs"
 
 import path from 'path';
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
@@ -45,7 +44,12 @@ app.get("/map/:stadium", async (req, res) => {
     console.log(result);
     res.render("map.ejs", {data: result});
 })
-
+app.get("/ticket/:ticket", async (req, res) => {
+    const ticket = req.params.ticket;
+    const result = await getTickets(ticket);
+    console.log(result);
+    res.render("tickets.ejs", {data: result});
+})
 
 app.get("/test", async (req, res) => {
     const result = await getCities();
@@ -57,16 +61,13 @@ app.get('/adminlogin', (req, res) => {
 })
 
 app.get("/admin", (req, res) => {
-    res.render('AdminDashboard')
+    if (req.cookies && req.cookies.loggedIn === 'yes') {
+        res.render('AdminDashboard');
+    } else {
+        res.render('adminLogin');
+    }
 })
-app.get("/tickets/:ticket", async (req, res) => {
-    const ticket = req.params.ticket;
-    const result = await getTickets(ticket);
-    console.log(ticket);
-    console.log(result);
-    res.render('tickets',{data: result}); 
-    
-})
+
 //app.get("/api/data", (req, res) => {
 //    const data = {message: "This is the message"};
 //    res.json(data)
@@ -240,6 +241,18 @@ app.post('/updateCityName', async (req, res) => {
     const placeholder = await updateCityName(cityName, newName)
     res.send('Data updated in the database!');
 });
+
+app.post('/login', async (req, res) => {
+    const {username, password} = req.body;
+    const awnser = await login(username, password)
+    if(awnser != []){
+        res.cookie("loggedIn", "yes")
+        res.render('AdminDashboard')
+    } else{
+        res.render('adminLogin')
+    }
+})
+
 
 // Define the PORT
 const port = 4000;
