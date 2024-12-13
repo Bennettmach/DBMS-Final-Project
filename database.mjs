@@ -6,7 +6,7 @@ const pool = mysql.createPool({
     host: '127.0.0.1',
     user: 'root',
     //password: '',
-    database: 'dbms'
+    database: 'dbproject'
 }).promise()
 
 export async function getCities(){
@@ -106,9 +106,15 @@ export async function createTeamByStadiumNameAndCityName(TeamName, HomeStadium, 
     const StadiumID = StadiumData[0][0].StadiumID;
     const CityData = await pool.query (`SELECT CityID FROM Cities WHERE CityName = ?`, [HomeCity])
     const CityID = CityData[0][0].CityID;
+    const test = await pool.query(`
+        SELECT * FROM Teams WHERE TeamName = ? AND HomeStadiumID = ? AND HomeCityID = ?`, [TeamName, StadiumID, CityID])
+    if(test[0][0] == undefined){
     const result = await pool.query(
     ` INSERT INTO Teams (TeamName, HomeStadiumID, HomeCityID) VALUES (?, ?, ?)`, [TeamName, StadiumID, CityID])
-    return result + "Admin created";
+    return "New Team created";
+    } else {
+        return "Team already exists!"
+    }
 }
 
 export async function createGame(Team1, Team2, Stadium, WinningTeam, Team1Score, Team2Score, Date) {

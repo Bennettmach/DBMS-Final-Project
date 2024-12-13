@@ -220,14 +220,14 @@ app.post('/createCity', async (req, res) => {
     const { city, state, latitude, longitude } = req.body;
     // Insert data into the database
     const placeholder = await createCity(city, state, latitude, longitude);
-    res.render('New City successfully saved to the database!');
+    res.send('New City successfully saved to the database!');
 });
 
 app.post('/createTeam', async (req, res) => {
     const { TeamName, HomeStadium, HomeCity} = req.body;
     // Insert data into the database
     const placeholder = await createTeamByStadiumNameAndCityName(TeamName, HomeStadium, HomeCity);
-    res.send('New Team successfully saved to the database!');
+    res.send(placeholder);
 });
 
 app.post('/testGetCities', async (req, res) => {
