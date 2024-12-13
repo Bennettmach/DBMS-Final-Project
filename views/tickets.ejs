@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.js"></script>
+    <link rel="stylesheet" href="/static/index.css">
+    <script type="text/javascript" src="/static/Table.js" ></script>   
+    <script type="module" src="/javascript/database.mjs"></script>
+  </head>
+  <body>
+    <div class="tableBox">
+      <h2>      Ticket Options    </h2>
+      <table>
+      <tr>
+        <th>Section</th>
+        <th>Price</th>
+        <th>Purchase</th>
+      </tr>
+      <% if (data && data.length > 0) { %>
+        <% data.forEach(entry => { %>
+            <tr>
+                <td><%= entry.Section %></td>
+                <td>$<%= entry.Price %>.99</td>
+                <td><button class="button-2"> Buy Now! </button></td>
+            </tr>
+            <% })} %>
+        </table>
+      <div> 
+
+      <script>
+      document.addEventListener("DOMContentLoaded", function () {
+  async function fetchGameData() {
+    const userInputStartDate = document.getElementById("startdate").value.trim();
+    const userInputEndDate = document.getElementById("enddate").value.trim();
+    const userInputTeam = document.getElementById("team").value.trim();
+    const userInputStadium = document.getElementById("stadium").value.trim();
+
+    try {
+      // Construct query parameters based on input
+      const queryParams = new URLSearchParams();
+      if (userInputStartDate) queryParams.append("startDate", userInputStartDate);
+      if (userInputEndDate) queryParams.append("endDate", userInputEndDate);
+      if (userInputTeam) queryParams.append("team", userInputTeam);
+      if (userInputStadium) queryParams.append("stadium", userInputStadium);
+
+      const response = await fetch(`http://localhost:4000/games?${queryParams.toString()}`);
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} ${response.statusText}`);
+      }
+
+      const data = await response.json();
+
+      // Find the game data container
+      const gameDataContainer = document.getElementById("myGrid");
+
+      if (gameDataContainer) {
+        gameDataContainer.innerHTML = ""; // Clear previous results
+
+        // Create a table element
+        const table = document.createElement("table");
+        table.style.width = "100%";
+        table.style.borderCollapse = "collapse";
+
+        // Create table header
+        const header = document.createElement("thead");
+        header.innerHTML = `
+          <tr>
+            <th>Date</th>
+            <th>Team 1</th>
+            <th>Team 2</th>
+            <th>Stadium</th>
+            <th>Score 1</th>
+            <th>Score 2</th>
+            <th>Winner</th>
+            <th>Tickets</th>
+            <th>See it on the Map!</th>
+          </tr>
+        `;
+        table.appendChild(header);
+
+        // Create table body
+        const tbody = document.createElement("tbody");
+
+        if (data.length > 0) {
+          data.forEach(game => {
+            // Ensure the game.GameDate is a valid date
+            const gameDate = new Date(game.GameDate);
+            const formattedDate = isNaN(gameDate) ? "Invalid Date" : gameDate.toLocaleDateString('en-US');
+
+            const row = document.createElement("tr");
+            row.innerHTML = `
+              <td>${formattedDate}</td>
+              <td>${game.Team1}</td>
+              <td>${game.Team2}</td>
+              <td>${game.Stadium}</td>
+              <td>${game.Score1}</td>
+              <td>${game.Score2}</td>
+              <td>${game.Winner}</td>
+              <td><form action="/index" method="GET"><button class="button-2" type"submit"> See Tickets for this game </button></form></td>
+              <td><form action="/map/${game.StadiumID}" method="GET"> <input type="hidden" name="stadium" value="${game.StadiumID}"> <button class="button-2" type="submit">GO</button></form> </td>
+            `;
+            tbody.appendChild(row);
+          });
+        } else {
+          const noResultsRow = document.createElement("tr");
+          noResultsRow.innerHTML = "<td colspan='7'>No games found with the specified filters.</td>";
+          tbody.appendChild(noResultsRow);
+        }
+
+        table.appendChild(tbody);
+        gameDataContainer.appendChild(table);
+      } else {
+        console.error("Could not find element with ID 'myGrid'");
+      }
+    } catch (error) {
+      console.error("Error fetching games:", error);
+      const gameDataContainer = document.getElementById("myGrid");
+      if (gameDataContainer) {
+        gameDataContainer.innerHTML = `<p>Error fetching data: ${error.message}</p>`;
+      }
+    }
+  }
+
+  // Attach the fetch function to the form submit event
+  document.getElementById("form").addEventListener("submit", function(event) {
+    event.preventDefault(); // Prevent default form submission
+    fetchGameData();
+  });
+});
+    </script>
+    </div>
+
+
+
+      <div id="myGrid" class="ag-theme-quartz" style="height: 500px; color:black"></div>
+    </div>
+    <div class="tableBox">
+ 
+      
+    </div>
+    <div class="tableBox">
+      
+
+    </div>
+
+  
+</body>
+</html>
