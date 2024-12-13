@@ -41,14 +41,22 @@ function moveMap(map){
   function addMarkersToMap(map) {
     map.removeObjects(map.getObjects());
     let data = myData.replaceAll("&#34;","\'");
-    console.log(data)
     data = eval('('+data+')')
+    var lst = []
     if (data && data.length > 0) {
       for (let i=0;i<data.length;i++){
-        console.log(data[i])
         var tmp = new H.map.Marker({lat: data[i].Lat, lng: data[i].Lon});
-        map.addObject(tmp);
+        lst.push(tmp)
       };
     }
+    var icon = new H.map.Icon('/static/stadium-cylinder.svg');
+    var group = new H.map.Group();
+    group.addObjects(lst)
+    map.addObject(group)
+
+    map.getViewModel().setLookAtData({
+      bounds: group.getBoundingBox()
+    });
+
   }
 
