@@ -106,9 +106,15 @@ export async function createTeamByStadiumNameAndCityName(TeamName, HomeStadium, 
     const StadiumID = StadiumData[0][0].StadiumID;
     const CityData = await pool.query (`SELECT CityID FROM Cities WHERE CityName = ?`, [HomeCity])
     const CityID = CityData[0][0].CityID;
+    const test = await pool.query(`
+        SELECT * FROM Teams WHERE TeamName = ? AND HomeStadiumID = ? AND HomeCityID = ?`, [TeamName, StadiumID, CityID])
+    if(test[0][0] == undefined){
     const result = await pool.query(
     ` INSERT INTO Teams (TeamName, HomeStadiumID, HomeCityID) VALUES (?, ?, ?)`, [TeamName, StadiumID, CityID])
-    return result + "Admin created";
+    return "New Team created";
+    } else {
+        return "Team already exists!"
+    }
 }
 
 export async function createGame(Team1, Team2, Stadium, WinningTeam, Team1Score, Team2Score, Date) {
@@ -202,6 +208,7 @@ export async function getGames(filters) {
     let query = `
         SELECT 
             g.GameDate,
+            g.GameID,
             t1.TeamName AS Team1,
             t2.TeamName AS Team2,
             s.StadiumName AS Stadium,
@@ -250,6 +257,12 @@ export async function getGames(filters) {
     const result = await pool.query(
         `SELECT a.* FROM Stadiums s JOIN Cities c ON c.CityID = s.CID JOIN Airports a ON a.CityID = c.CityID WHERE s.StadiumID = ? AND ST_Distance_Sphere(point(a.Lon, a.Lat), point(s.Lon, s.Lat)) * 0.000621371192 < ?;`,
         [stadiumID, range])
+    return result[0]
+ }
+ export async function getTickets(GameID) {
+    const result = await pool.query(
+        `SELECT Price, Section FROM Tickets WHERE GameID = ?`,
+        [GameID])
     return result[0]
  }
 

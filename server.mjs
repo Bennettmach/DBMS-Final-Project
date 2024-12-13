@@ -7,7 +7,7 @@ import {getCity, getCities, getDate, getTeam, createCity, removeCity, updateCity
     removeCityByName, removeTeamByName, createAdmin, createTeam, 
     createTeamByStadiumNameAndCityName, removeAdminByName, createTicket, removeTicket, 
     createStadium, removeStadiumByName, createGame, removeGame, removeAirport, createAirport,
-    updateGame, getGames, getAirports, login} from "./database.mjs"
+    updateGame, getGames, getAirports, login,getTickets} from "./database.mjs"
 
 import path from 'path';
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
@@ -51,7 +51,13 @@ app.get("/map", async (req, res) => {
     console.log(result);
     res.render("map.ejs", {data: result, stadiumID: stadium});
 })
-
+app.get("/tickets/:ticket", async (req, res) => {
+    const ticket = req.params.ticket;
+    console.log(ticket);
+    const result = await getTickets(ticket);
+    console.log(result);
+    res.render("tickets.ejs", {data: result});
+})
 
 app.get("/test", async (req, res) => {
     const result = await getCities();
@@ -224,7 +230,7 @@ app.post('/createTeam', async (req, res) => {
     const { TeamName, HomeStadium, HomeCity} = req.body;
     // Insert data into the database
     const placeholder = await createTeamByStadiumNameAndCityName(TeamName, HomeStadium, HomeCity);
-    res.send('New Team successfully saved to the database!');
+    res.send(placeholder);
 });
 
 app.post('/testGetCities', async (req, res) => {
