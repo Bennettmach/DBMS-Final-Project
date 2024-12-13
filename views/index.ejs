@@ -93,7 +93,7 @@
               <td>${game.Score2}</td>
               <td>${game.Winner}</td>
               <td><form action="/index" method="GET"><button class="button-2" type"submit"> See Tickets for this game </button></form></td>
-              <td><form action="/map/${game.StadiumID}" method="GET"> <input type="hidden" name="stadium" value="${game.StadiumID}"> <button class="button-2" type="submit">GO</button></form> </td>
+              <td><form action="/map" method="GET"> <input type="hidden" name="stadium" value=${game.StadiumID}> <input type="hidden" name="dist" value=50><button class="button-2" type="submit">GO</button></form> </td>
             `;
             tbody.appendChild(row);
           });
