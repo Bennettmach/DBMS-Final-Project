@@ -88,6 +88,7 @@
         <!-- Sidebar Section -->
         <div class="sidebar">
             <h2>Menu</h2>
+            <a href="#" id = "logOut"><i class="fas fa-cogs"></i> Log Out</a>
             <a href="#" id = "insertCities"><i class="fas fa-cogs"></i> Create Or Delete Cities</a>
             <a href="#" id = "insertGames"><i class="fas fa-cogs"></i> Create Or Delete Games</a>
             <a href="#" id = "insertAirport"><i class="fas fa-cogs"></i> Create Or Delete Airport</a>
@@ -130,6 +131,11 @@
     </div>
 
     <script>
+        document.getElementById('logOut').addEventListener('click', function(event){
+            event.preventDefault();
+            document.cookie = "loggedIn=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            window.location.href = '/'
+        })
         document.getElementById('insertAdmin').addEventListener('click', function(event) {
             event.preventDefault();
             const insertAdminCard = '<div class="card">\
