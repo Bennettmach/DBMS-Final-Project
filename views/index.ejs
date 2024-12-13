@@ -100,13 +100,8 @@
               <td>${game.Score1}</td>
               <td>${game.Score2}</td>
               <td>${game.Winner}</td>
-<<<<<<< HEAD
-              <td><form action="/index" method="GET"><button class="button-2" type"submit"> See Tickets for this game </button></form></td>
-              <td><form action="/map" method="GET"> <input type="hidden" name="stadium" value=${game.StadiumID}> <input type="hidden" name="dist" value=50><button class="button-2" type="submit">GO</button></form> </td>
-=======
               <td><form action="/tickets/${game.GameID}" method="GET"><input type="hidden" name="ticket" value="${game.gameID}"> <button class="button-2" type"submit"> See Tickets for this game </button></form></td>
-              <td><form action="/map/${game.StadiumID}" method="GET"> <input type="hidden" name="stadium" value="${game.StadiumID}"> <button class="button-2" type="submit">GO</button></form> </td>
->>>>>>> e7416d512db4b655560a8ce86fcc965293cf40dc
+              <td><form action="/map" method="GET"> <input type="hidden" name="stadium" value=${game.StadiumID}> <input type="hidden" name="dist" value=50><button class="button-2" type="submit">GO</button></form> </td>
             `;
             tbody.appendChild(row);
           });
